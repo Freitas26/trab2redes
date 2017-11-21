@@ -15,18 +15,19 @@ def bin_change_addr(num):
         mid='{0:08b}'.format(int(div[i]))
         part.append(str(mid))
 
-    resp="s%.s%.s%.s%"%(part[0],part[1],part[2],part[3])
+    resp=('{}.{}.{}.{}'.format(part[0],part[1],part[2],part[3]))
     return resp
 def calc_smask(pref):
     resp=""
+    test=int(pref)
     for j in  range(0,4):
         for i in range(0,8):
-            if pref>1:
+            if test>0:
                 resp= resp+"1"
-                pref=pref-1
+                test=test-1
             else:
                 resp=resp+"0"
-        resp="."
+        resp=resp+"."
     return resp
 
 
