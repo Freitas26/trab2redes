@@ -13,15 +13,23 @@ def info_rede(addr, smask, pref):
     print ("mascara de sub-rede binario: "+smask)
     smask_dec=bin_to_dec(smask)
     print ("mascara de subrede : "+smask_dec)
+
     broad_bin=calc_broadcast(bin_addr,pref)
     print("endereço de broadcast binario: "+broad_bin)
     broad=bin_to_dec(broad_bin)
     print("endereço de broadcast: "+broad)
+
     print("tamanho do prefixo:"+pref)
     bottom_addr=min_addr(sub_addr)
-    print('primeiro endereço disponivel: '+bottom_addr)
+    print('primeiro endereço disponivel binario: '+bottom_addr)
+    dec_bottom=bin_to_dec(bottom_addr)
+    print('primeiro endereço disponivel: '+dec_bottom)
+
     top_addr=max_addr(broad_bin)
-    print("ultimo endereço disponivel: "+top_addr)
+    print("ultimo endereço disponivel binario: "+top_addr)
+    dec_top=bin_to_dec(top_addr)
+    print('ultimo endereço disponivel: '+dec_top)
+
     num_addrs=str(int(math.pow(2,32-int(pref)))-2)
     print("numero de endereços disponiveis: "+ num_addrs)
 
