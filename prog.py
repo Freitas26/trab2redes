@@ -31,7 +31,7 @@ def info_rede(addr, smask, pref):
     print('ultimo endereço disponivel: '+dec_top)
 
     num_addrs=str(int(math.pow(2,32-int(pref)))-2)
-    print("numero de endereços disponiveis: "+ num_addrs)
+    print("numero de endereços disponiveis: "+ num_addrs+"\n")
 
 #addr em binario
 def bin_change_addr(num):
@@ -117,21 +117,55 @@ def fixed_mode(addr,submask,pref,x_sub,x_pref):
     info_rede(addr,submask,pref)
     lista_redes = []
     endereco=vetor_addr(addr)
-    lista_redes = divisor(addr,pref,x_pref)
+    lista_redes = divisor(endereco,pref,x_pref)
+    temp=''
+    for t in range(0,len(lista_redes)):
+        temp=bota_ponto(lista_redes[t],addr)
+        info_rede(temp,x_sub,x_pref)
 
 
 def vetor_addr(addr):
-    div=bin_broad_addr.split('.')
+    bin_addr=bin_change_addr(addr)
+    div=bin_addr.split('.')
     resp=[]
     for j in  range(0,4):
         for i in range(0,8):
             resp.append(div[j][i])
     return resp
 
-def divisor(addr,pref,x_pref):
+def divisor(vet_addr,pref,x_pref):
     dif=int(x_pref) - int(pref)
+    coisa=''
     temp=[]
-    temp=fazer_preenchimento(dif)
+    list_subnet=[]
+    for i in range(0,31):
+        if (i>int(pref)-1) and (i<=int(x_pref)-1):
+            coisa=coisa+'0'
+        else:coisa=coisa+'s'
+    list_subnet.append(coisa)
+    print(list_subnet)
+    str_dif='0'+str(dif)
+    form='{0:'+str_dif+'b}'
+    for j in range(1,pow(2,int(dif))-1):
+        temp_num=form.format(j)
+        for y in range(0,31):
+            if y>int(pref)-1 and y<=int(x_pref)-1:
+                temp.append(temp_num[y-int(pref)-1])
+            else:
+                temp.append(vet_addr[y])
+        list_subnet.append(temp)
+    return list_subnet
+def bota_ponto(zuado,original):
+    resp=''
+    ref=0
+    for i in range(0,len(original)):
+        if original[i]=='.':
+            resp=resp+'.'
+            ref=ref+1
+        else:
+            resp=resp+zuado[i-ref]
+    return resp
+
 
 
 
@@ -156,6 +190,6 @@ elif tipo == "2":
     else:
         extra_pref=sys.argv[4]
         extra_subm=calc_smask(extra_pref)
-    fixed_mode(addr, submask, pref, x_subm,x_pref)
+    fixed_mode(addr, submask, pref, extra_subm,extra_pref)
 elif tipo == "3":
     varied_mode()
