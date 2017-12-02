@@ -2,8 +2,8 @@ import sys
 import math
 def info_rede(addr, smask, pref):
     bin_addr=bin_change_addr(addr)
-    bin_sub_addr=bin_change_addr(addr)
-    sub_addr=bin_to_dec(bin_addr)
+    bin_sub_addr=calc_subaddr(bin_addr,pref)
+    sub_addr=bin_to_dec(bin_sub_addr)
 
 
     print("endereço sub-rede:"+ sub_addr)
@@ -85,12 +85,11 @@ def calc_subaddr(bin_addr,pref):
             num=num+1
         else:
             substitute=substitute+'0'
-        print (substitute)
     return substitute
 
 def bin_to_dec(bin_addr):
     div=bin_addr.split('.')
-    #print(div[0])
+
     new=[]
 
     for i in range(0,4):
@@ -114,10 +113,11 @@ def max_addr(bin_broad_addr):
     return resp
 
 
-def fixed_mode(addr,submask,pref,adicional):
+def fixed_mode(addr,submask,pref,x_sub,x_pref):
     info_rede(addr,submask,pref)
+    lista_redes = []
     endereco=vetor_addr(addr)
-    #divisor()
+    lista_redes = divisor(addr,pref,x_pref)
 
 
 def vetor_addr(addr):
@@ -127,6 +127,13 @@ def vetor_addr(addr):
         for i in range(0,8):
             resp.append(div[j][i])
     return resp
+
+def divisor(addr,pref,x_pref):
+    dif=int(x_pref) - int(pref)
+    temp=[]
+    temp=fazer_preenchimento(dif)
+
+
 
 
 tipo =sys.argv[1]
