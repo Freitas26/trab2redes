@@ -115,13 +115,19 @@ def max_addr(bin_broad_addr):
 
 def fixed_mode(addr,submask,pref,x_sub,x_pref):
     info_rede(addr,submask,pref)
+    bin_addr= bin_change_addr(addr)
     lista_redes = []
+    resultados=[]
     endereco=vetor_addr(addr)
     lista_redes = divisor(endereco,pref,x_pref)
     temp=''
+    print(len(lista_redes))
+    print(*lista_redes, sep='\n')
     for t in range(0,len(lista_redes)):
-        temp=bota_ponto(lista_redes[t],addr)
-        info_rede(temp,x_sub,x_pref)
+
+        temp=bota_ponto(lista_redes[t],bin_addr)
+        resultados.append(bin_to_dec(temp))
+        info_rede(resultados[t],x_sub,x_pref)
 
 
 def vetor_addr(addr):
@@ -138,24 +144,21 @@ def divisor(vet_addr,pref,x_pref):
     coisa=''
     temp=[]
     list_subnet=[]
-    for i in range(0,31):
-        if (i>int(pref)-1) and (i<=int(x_pref)-1):
-            coisa=coisa+'0'
-        else:coisa=coisa+'s'
-    list_subnet.append(coisa)
-    print(list_subnet)
     str_dif='0'+str(dif)
     form='{0:'+str_dif+'b}'
-    for j in range(1,pow(2,int(dif))-1):
+    print(form)
+    for j in range(0,pow(2,int(dif))):
         temp_num=form.format(j)
-        for y in range(0,31):
+        for y in range(0,32):
             if y>int(pref)-1 and y<=int(x_pref)-1:
-                temp.append(temp_num[y-int(pref)-1])
+                temp.append(temp_num[y-int(pref)])
             else:
                 temp.append(vet_addr[y])
-        list_subnet.append(temp)
+        list_subnet.append(''.join(temp))
+        del temp[:]
     return list_subnet
-def bota_ponto(zuado,original):
+
+def bota_ponto(sem_ponto,original):
     resp=''
     ref=0
     for i in range(0,len(original)):
@@ -163,7 +166,7 @@ def bota_ponto(zuado,original):
             resp=resp+'.'
             ref=ref+1
         else:
-            resp=resp+zuado[i-ref]
+            resp=resp+sem_ponto[i-ref]
     return resp
 
 
