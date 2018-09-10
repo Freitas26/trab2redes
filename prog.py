@@ -173,6 +173,7 @@ def bota_ponto(sem_ponto,original):
 
 
 
+
 tipo =sys.argv[1]
 addr=sys.argv[2]
 submask=' '
@@ -195,4 +196,9 @@ elif tipo == "2":
         extra_subm=calc_smask(extra_pref)
     fixed_mode(addr, submask, pref, extra_subm,extra_pref)
 elif tipo == "3":
-    varied_mode()
+    quant=sys.argv[4]
+    guarda_quant=[]
+    for i in range(0,quant):
+        temp=input('diga a quantidade de endereços necessarios')
+        guarda_quant.append(temp)
+    variable_mode(addr,pref,submask,guarda_quant)
