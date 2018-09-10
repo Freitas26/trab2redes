@@ -18,7 +18,7 @@ def info_rede(addr, smask, pref):
     broad=bin_to_dec(broad_bin)
     print("endereço de broadcast: "+broad)
 
-    print("tamanho do prefixo:"+pref)#bota o tamanho do prefixo na tela
+    print("tamanho do prefixo:"+str(pref))#bota o tamanho do prefixo na tela
 
     bottom_addr=min_addr(bin_sub_addr)
     print('primeiro endereço disponivel binario: '+bottom_addr)#primeiro endereço possivel de uso na subrede
@@ -34,7 +34,7 @@ def info_rede(addr, smask, pref):
     print("numero de endereços disponiveis: "+ num_addrs+"\n")
 
 #addr em binario
-def bin_change_addr(num):
+def bin_change_addr(num):#converde endereço decimal pra biinario
     part=[]
     div=num.split('.')
     for i in range(0,4):
@@ -60,7 +60,6 @@ def calc_smask(pref):
 def calc_broadcast(bin_addr,pref):
     substitute=''
     val=int(pref)//8
-    print (val)
     num=0
     for i in range(0,35):
         if bin_addr[i]=='.':
@@ -174,31 +173,27 @@ def bota_ponto(sem_ponto,original):
 
 
 
-tipo =sys.argv[1]
-addr=sys.argv[2]
-submask=' '
-pref=' '
-if '.' in sys.argv[3]:
-    submask=sys.argv[3]
-    pref=addr.count('1')
-else:
-    pref=sys.argv[3]
-    submask=calc_smask(pref)
-
-if tipo == "1":
-    info_rede(addr, submask, pref)
-elif tipo == "2":
-    if '.' in sys.argv[4]:
-        extra_subm=sys.argv[4]
-        extra_pref=extra_subm.count('1')
+if verificaEntrada():
+    tipo =sys.argv[1]
+    addr=sys.argv[2]
+    submask=' '
+    pref=' '
+    if '.' in sys.argv[3]:#se possui um ponto no 3o argumento, entao ele eh uma mascara de rede
+        submask=bin_change_addr(sys.argv[3])
+        pref=submask.count('1')
     else:
-        extra_pref=sys.argv[4]
-        extra_subm=calc_smask(extra_pref)
-    fixed_mode(addr, submask, pref, extra_subm,extra_pref)
-elif tipo == "3":
-    quant=sys.argv[4]
-    guarda_quant=[]
-    for i in range(0,quant):
-        temp=input('diga a quantidade de endereços necessarios')
-        guarda_quant.append(temp)
-    variable_mode(addr,pref,submask,guarda_quant)
+        pref=sys.argv[3]
+        submask=calc_smask(pref)
+
+    if tipo == "1":
+        info_rede(addr, submask, pref)
+    elif tipo == "2":
+        if '.' in sys.argv[4]:
+            extra_subm=sys.argv[4]
+            extra_pref=extra_subm.count('1')
+        else:
+            extra_pref=sys.argv[4]
+            extra_subm=calc_smask(extra_pref)
+        fixed_mode(addr, submask, pref, extra_subm,extra_pref)
+    elif tipo == "3":
+        varied_mode()
